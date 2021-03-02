@@ -71,19 +71,18 @@ public class Controller implements Initializable {
                     while (true) {
                         String str = in.readUTF();
 
-                        if(str.startsWith("/")){
+                        if (str.startsWith("/")) {
                             if (str.equals(Command.END)) {
-                                out.writeUTF(Command.END);
-                                break;
+                                throw new RuntimeException("Server kick us");
                             }
-                            if(str.startsWith(Command.AUTH_OK)){
+                            if (str.startsWith(Command.AUTH_OK)) {
                                 String[] token = str.split("\\s");
                                 nickname = token[1];
                                 setAuthenticated(true);
                                 break;
                             }
-                        }else{
-                            textArea.appendText(str+"\n");
+                        } else {
+                            textArea.appendText(str + "\n");
                         }
 
                     }
@@ -99,6 +98,8 @@ public class Controller implements Initializable {
 
                         textArea.appendText(str + "\n");
                     }
+                }catch (RuntimeException e){
+                    System.out.println(e.getMessage());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }finally {

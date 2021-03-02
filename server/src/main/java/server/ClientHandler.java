@@ -31,28 +31,26 @@ public class ClientHandler {
 
                         if (str.equals(Command.END)) {
                             out.writeUTF(Command.END);
-                            break;
+                            throw new RuntimeException("Client disconnecting");
                         }
-                        if(str.startsWith(Command.AUTH)){
+                        if (str.startsWith(Command.AUTH)) {
                             String[] token = str.split("\\s");
 
-                            if(token.length <3){
+                            if (token.length < 3) {
                                 continue;
                             }
                             String newNick = server.getAuthService().getNicknameByLoginAndPassword(token[1], token[2]);
-                            if(newNick!=null){
-                                 nickname = newNick;
-                                 sendMsg(Command.AUTH_OK+nickname);
-                                 server.subscribe(this);
-                                System.out.println("client:"+ socket.getRemoteSocketAddress()+" connected with nick "+ nickname);
-                                 break;
-                            }else{
+                            if (newNick != null) {
+                                nickname = newNick;
+                                sendMsg(Command.AUTH_OK + nickname);
+                                server.subscribe(this);
+                                System.out.println("client:" + socket.getRemoteSocketAddress() + " connected with nick " + nickname);
+                                break;
+                            } else {
                                 sendMsg("Неверные логие или пароль");
                             }
                         }
                     }
-
-
 
 
                     //цикл работы
@@ -65,6 +63,8 @@ public class ClientHandler {
                         }
                         server.broadcastMsg(this, str);
                     }
+                }catch (RuntimeException e){
+                    System.out.println(e.getMessage());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }finally {
