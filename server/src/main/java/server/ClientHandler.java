@@ -31,7 +31,7 @@ public class ClientHandler {
                     //установка сокет тайм аут
                     Thread timerThread = new Thread(()->{
                         try {           //Сделал так, для возможного добавления функционала. Может так и не надо делать, если не надо, то напишите пожалуйста.
-                            socket.setSoTimeout(10000);
+                            socket.setSoTimeout(120000);
                         } catch (SocketException e) {
                             e.printStackTrace();
                         }
