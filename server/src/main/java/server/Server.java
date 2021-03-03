@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Server {
-    private final int PORT = 8190;
+    private final int PORT = 8192;
     private ServerSocket server;
     private Socket socket;
     private DataInputStream in;
@@ -40,13 +40,13 @@ public class Server {
         }
     }
     public void broadcastMsg(ClientHandler sender, String msg){
-        String message = String.format("[ %s ]: %s ", sender.getNickname(), msg);
+        String message = String.format("[ %s ] : %s ", sender.getNickname(), msg);
         for(ClientHandler c: clients){
             c.sendMsg(message);
         }
     }
     public void privateMsg(ClientHandler sender, String receiver, String msg){
-        String message = String.format("[ %s ] to [ %s ]: %s ", sender.getNickname(), receiver, msg);
+        String message = String.format("[ %s ] to [ %s ] :  %s ", sender.getNickname(), receiver, msg);
 
         for(ClientHandler c: clients){
             if(c.getNickname().equals(receiver)){

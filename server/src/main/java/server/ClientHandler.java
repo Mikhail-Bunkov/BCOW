@@ -6,6 +6,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 public class ClientHandler {
     private Server server;
@@ -26,6 +28,17 @@ public class ClientHandler {
 
             new Thread(()->{
                 try {
+                    //установка сокет тайм аут
+                    Thread timerThread = new Thread(()->{
+                        try {           //Сделал так, для возможного добавления функционала. Может так и не надо делать, если не надо, то напишите пожалуйста.
+                            socket.setSoTimeout(10000);
+                        } catch (SocketException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    timerThread.setDaemon(true);
+                    timerThread.start();
+
                     //цикл аутентификации
                     while (true) {
                         String str = in.readUTF();
@@ -50,6 +63,7 @@ public class ClientHandler {
                                     server.subscribe(this);
                                     System.out.println("client:" + socket.getRemoteSocketAddress() +
                                             " connected with nick " + nickname);
+                                    socket.setSoTimeout(0);
                                     break;
                                 } else{
                                     sendMsg("Данная учетная запись уже используется");
@@ -95,6 +109,13 @@ public class ClientHandler {
                         }else{
                             server.broadcastMsg(this, str);
                         }
+                    }
+                }catch (SocketTimeoutException e) {
+                    try {
+                        out.writeUTF(Command.END);
+                        System.out.println("Time is out - " + nickname);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
                     }
                 }catch (RuntimeException e){
                     System.out.println(e.getMessage());

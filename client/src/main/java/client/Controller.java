@@ -36,7 +36,7 @@ public class Controller implements Initializable {
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
-    private final int PORT = 8190;
+    private final int PORT = 8192;
     private final String IP_ADDRESS ="localhost";
 
     private boolean authenticated;
@@ -192,6 +192,7 @@ public class Controller implements Initializable {
         System.out.println(clientList.getSelectionModel().getSelectedItems());
         String msg = String.format("%s %s ", Command.PRIVATE_MSG, clientList.getSelectionModel().getSelectedItems());
         textField.setText(msg);
+        textField.requestFocus();
     }
 
     public void showRegWindow(ActionEvent actionEvent) {
