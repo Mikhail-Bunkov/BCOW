@@ -48,7 +48,8 @@ public class ClientHandler {
                                     nickname = newNick;
                                     sendMsg(Command.AUTH_OK +" "+ nickname);
                                     server.subscribe(this);
-                                    System.out.println("client:" + socket.getRemoteSocketAddress() + " connected with nick " + nickname);
+                                    System.out.println("client:" + socket.getRemoteSocketAddress() +
+                                            " connected with nick " + nickname);
                                     break;
                                 } else{
                                     sendMsg("Данная учетная запись уже используется");
@@ -62,6 +63,13 @@ public class ClientHandler {
                             String token[] = str.split("\\s",4);
                             if(token.length<4){
                                 continue;
+                            }
+                            boolean regSuccess = server.getAuthService()
+                                    .registration(token[1], token[2], token[3]);
+                            if(regSuccess){
+                                sendMsg(Command.REGISTRATION_IS_OK);
+                            }else{
+                                sendMsg(Command.REGISTRATION_IS_NOT_OK);
                             }
                         }
                     }

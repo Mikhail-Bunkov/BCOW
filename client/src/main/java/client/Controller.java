@@ -103,6 +103,12 @@ public class Controller implements Initializable {
                                 setAuthenticated(true);
                                 break;
                             }
+                            if (str.equals(Command.REGISTRATION_IS_OK)){
+                                regController.setResultTryToReg(Command.REGISTRATION_IS_OK);
+                            }
+                            if (str.equals(Command.REGISTRATION_IS_NOT_OK)){
+                                regController.setResultTryToReg(Command.REGISTRATION_IS_NOT_OK);
+                            }
                         } else {
                             textArea.appendText(str + "\n");
                         }

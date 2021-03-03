@@ -17,7 +17,7 @@ public class RegController {
     public void setController(Controller controller) {
         this.controller = controller;
     }
-    public void addMsg(String command){
+    public void setResultTryToReg(String command){
         if(command.equals(Command.REGISTRATION_IS_OK)){
             textArea.appendText("Регистрация прошла успешно\n");
         }
