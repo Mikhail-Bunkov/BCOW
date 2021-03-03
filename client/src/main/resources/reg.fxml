@@ -13,8 +13,8 @@
     </stylesheets>
 
         <TextField fx:id="loginField" promptText="login"/>
-        <PasswordField fx:id="passwordField" promptText="login" />
-    <TextField fx:id="nicknameField" promptText="login"/>
+        <PasswordField fx:id="passwordField" promptText="password" />
+    <TextField fx:id="nicknameField" promptText="nickname"/>
     <TextArea fx:id="textArea" VBox.vgrow="ALWAYS" editable="false"/>
 
         <Button text="Reg" minWidth="100" onAction="#tryToRegistration"/>
