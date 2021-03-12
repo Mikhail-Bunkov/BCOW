@@ -106,6 +106,21 @@ public class ClientHandler {
                                 }
                                 server.privateMsg(this, token[1],token[2]);
                             }
+                            if (str.startsWith(Command.CHANGE_NICKNAME)){
+                                String [] token = str.split("//s", 2);
+                                if(token.length<2){
+                                    continue;
+                                }
+                                if(server.getAuthService().changeNickname(this.nickname, token[1])){
+                                    sendMsg(Command.CHANGED_NICKNAME +" " + token[1]);
+                                    sendMsg("Your nickname is changed: "+ token[1]);
+                                    this.nickname= token[1];
+                                    server.broadcastClientlist();
+                                }else{
+                                    sendMsg("unsuccessful attempt to change nickname.");
+                                }
+                            }
+
                         }else{
                             server.broadcastMsg(this, str);
                         }

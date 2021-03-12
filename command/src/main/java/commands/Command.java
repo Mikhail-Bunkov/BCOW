@@ -9,4 +9,6 @@ public class Command {
     public static final String REGISTRATION= "/registration";
     public static final String REGISTRATION_IS_OK= "/registrationisok";
     public static final String REGISTRATION_IS_NOT_OK= "/registrationisnotok";
+    public static final String CHANGE_NICKNAME= "/changenickname";
+    public static final String CHANGED_NICKNAME = "/changednickname";
 }

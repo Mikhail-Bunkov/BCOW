@@ -132,9 +132,15 @@ public class Controller implements Initializable {
                                     }
                                 });
                             }
+                            if(str.startsWith(Command.CHANGED_NICKNAME)){
+                                String[] token = str.split("\\s");
+                                nickname = token[1];
+                                setTitle(nickname);
+
+                            }
                         }else{
                             textArea.appendText(str + "\n");
-                        }
+                    }
                     }
                 }catch (RuntimeException e){
                     System.out.println(e.getMessage());
