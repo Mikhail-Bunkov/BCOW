@@ -1,5 +1,7 @@
 package server;
 
+
+
 import commands.Command;
 
 import java.io.DataInputStream;
@@ -20,9 +22,14 @@ public class Server {
     private List<ClientHandler> clients;
     private AuthService authService;
 
+
     public Server() {
         clients = new CopyOnWriteArrayList<>();
-        authService = new SimpleAuthService();
+        //authService = new SimpleAuthService();
+        if(!SQLHandler.connect()){
+            throw new RuntimeException("no connection with Database");
+        }
+        authService = new DataBaseAuthService();
 
         try{
             server = new ServerSocket(PORT);
@@ -37,6 +44,18 @@ public class Server {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            SQLHandler.disconnect();
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                server.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
     public void broadcastMsg(ClientHandler sender, String msg){
