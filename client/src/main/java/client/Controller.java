@@ -18,9 +18,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -38,6 +36,7 @@ public class Controller implements Initializable {
     private DataOutputStream out;
     private final int PORT = 8192;
     private final String IP_ADDRESS ="localhost";
+    private PrintWriter writer;
 
     private boolean authenticated;
     private String nickname;
@@ -115,9 +114,11 @@ public class Controller implements Initializable {
 
                     }
 
+
                     //цикл работы
                     while (true) {
                         String str = in.readUTF();
+                        writer = new PrintWriter(new FileOutputStream((nickname+".txt".trim()),true),true);
                         if(str.startsWith("/")){
                             if (str.equals(Command.END)) {
                                 System.out.println("Client disconnected");
@@ -140,13 +141,15 @@ public class Controller implements Initializable {
                             }
                         }else{
                             textArea.appendText(str + "\n");
-                    }
+                            writer.println(str);
+                        }
                     }
                 }catch (RuntimeException e){
                     System.out.println(e.getMessage());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }finally {
+                    writer.close();
                     setAuthenticated(false);
                     try {
                         socket.close();
